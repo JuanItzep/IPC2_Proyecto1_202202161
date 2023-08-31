@@ -6,11 +6,12 @@ from lista_celdas import lista_celdas
 from lista_senales import lista_senales
 if __name__=="__main__":
     lista_senales_guardadas=lista_senales() 
+    lista_identificadores = lista_celdas()
     def procesar_archivo(ruta):
         tree = ET.parse(ruta)
         raiz=tree.getroot()
-        print('Guardando Datos')
         for senal_temp in raiz.findall('senal'):
+            print('Guardando Datos')
             nombre_senal = senal_temp.get('nombre')
             tiempot = senal_temp.get('t')
             amplitudt = senal_temp.get('A')
@@ -26,9 +27,12 @@ if __name__=="__main__":
                         lista_celdas_temporal.insertar_ordenado(nueva_celda)
                 print('Generando lista de Patrones')
                 lista_celdas_temporal.crear_celdas_faltantes(int(tiempot),int(amplitudt))
-                lista_celdas_temporal.recorrer_e_imprimir_lista()
                 lista_patrones.crear_generar_patrones(int(tiempot),int(amplitudt),lista_celdas_temporal)
-                lista_senales_guardadas.insertar(senal(nombre_senal,tiempot,amplitudt,lista_celdas_temporal,lista_patrones))
+                lista_matriz_reducida=lista_celdas()
+                lista_matriz_reducida.generar_matriz_reducida(lista_patrones,lista_celdas_temporal,int(amplitudt))
+                lista_senales_guardadas.insertar(senal(nombre_senal,tiempot,amplitudt,lista_celdas_temporal,lista_patrones,lista_matriz_reducida))
+        lista_senales_guardadas.recorrer_e_imprimir_lista()
+        lista_senales_guardadas.recorrer_matriz_reducida()
 
     def iniciar_menu():
         ruta=''

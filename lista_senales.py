@@ -17,7 +17,18 @@ class lista_senales:
             actual = actual.siguiente
         actual.siguiente = nodo_nuevo
         self.contador_senales=0
-    
+    def recorrer_lista_iden(self):
+        print("------------------lista de indentificadores------------")
+        actual=self.primero
+        while actual!= None:
+            actual.objeto.lista_matriz_reducida.recorrer()
+            actual = actual.siguiente
+    def recorrer_matriz_reducida(self):
+        print("--------------------Matriz reducida-------------------")
+        actual = self.primero
+        while actual!= None:
+            actual.objeto.lista_matriz_reducida.recorrerm()
+            actual = actual.siguiente
     def recorrer_e_imprimir_lista(self):
         print("Total de senales almacenadas:",self.contador_senales+1)
         print("")
