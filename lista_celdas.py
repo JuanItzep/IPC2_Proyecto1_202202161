@@ -114,7 +114,7 @@ class lista_celdas:
                             dato2=lista_celdas_temporal.obtener(actual3.objeto.fila_tiempo,amplitud+1)
                             dato = dato1+dato2
                             nombre_filas_concatenadas=str(actual2.objeto.fila_tiempo)+","+str(actual3.objeto.fila_tiempo)
-                            self.insertar(celda_matriz_reducida(nombre_filas_concatenadas,dato,actual2.objeto.cadena_patron,amplitud+1))
+                            self.insertar(celda_matriz_reducida(nombre_filas_concatenadas,dato,actual2.objeto.cadena_patron,amplitud+1,2,actual2.objeto.fila_tiempo))
                             lista_identificadores.eliminar(actual3.objeto.fila_tiempo,actual3.objeto.cadena_patron)
                     else:
                         for amplitud in range(amplitudt):
@@ -126,9 +126,59 @@ class lista_celdas:
             if a:
                 for amplitud in range(amplitudt):
                     dato1=lista_celdas_temporal.obtener(actual2.objeto.fila_tiempo,amplitud+1)
-                    self.insertar(celda_matriz_reducida(actual2.objeto.fila_tiempo,dato1,actual2.objeto.cadena_patron,amplitud+1))
+                    self.insertar(celda_matriz_reducida(actual2.objeto.fila_tiempo,dato1,actual2.objeto.cadena_patron,amplitud+1,1,actual2.objeto.fila_tiempo))
             lista_identificadores.eliminar(actual2.objeto.fila_tiempo,actual2.objeto.cadena_patron)
             actual2= lista_identificadores.primero
+        self.ordenar_matriz_reducida(amplitudt)
+
+    def ordenar_matriz_reducida(self,amplitudt):
+        actual = self.primero
+        lista_minilistas= lista_celdas()
+        while actual!= None:
+            minilista=lista_celdas()
+            for amplitud in range(amplitudt):
+                minilista.insertar(actual.objeto)
+                actual = actual.siguiente
+            lista_minilistas.insertar_ordenado2(minilista)
+        nueva_lista_matriz_ordenada = lista_celdas()
+        actual1 = lista_minilistas.primero
+        while actual1!= None:
+            actual2= actual1.objeto.primero
+            while actual2!= None:
+                nueva_lista_matriz_ordenada.insertar(actual2.objeto)
+                actual2= actual2.siguiente
+            actual1 = actual1.siguiente
+        self.primero= nueva_lista_matriz_ordenada.primero 
+        
+    def insertar_ordenado2(self,minilista):
+        nodo_nuevo = nodo(objeto =minilista)
+        if self.primero is None:
+            self.primero = nodo_nuevo
+            return
+        if minilista.primero.objeto.num_filas>self.primero.objeto.primero.objeto.num_filas:
+            nodo_nuevo.siguiente = self.primero
+            self.primero = nodo_nuevo
+            return
+        actual = self.primero
+        while actual.siguiente!=None and (actual.siguiente.objeto.primero.objeto.num_filas>=minilista.primero.objeto.num_filas and 
+                                actual.siguiente.objeto.primero.objeto.tiempo_smaller<minilista.primero.objeto.tiempo_smaller):
+                actual = actual.siguiente
+        nodo_nuevo.siguiente= actual.siguiente
+        actual.siguiente = nodo_nuevo
+
+
+
+    def eliminar2(self,objeto):
+        actual = self.primero
+        if actual.objeto == objeto:
+            print("entraif")
+            self.primero = actual.siguiente
+        while actual!=None:
+            if actual.siguiente:
+                if actual.siguiente.objeto == objeto:
+                    aux = actual.siguiente
+                    actual.siguiente = aux.siguiente
+            actual = actual.siguiente
 
     def eliminar(self,fila_tiempo,cadena_patron):
         actual = self.primero
@@ -147,6 +197,7 @@ class lista_celdas:
             if actual.objeto.cadena_patron==cadena_patron and actual.objeto.amplitud==amplitud:
                 actual.objeto.dato= actual.objeto.dato+dato_a_sumar
                 actual.objeto.grupo=actual.objeto.grupo+","+nombmre_fila_concatenar
+                actual.objeto.num_filas= actual.objeto.num_filas+1
             actual = actual.siguiente
 
     def obtener(self,tiempo,amplitud):
@@ -160,7 +211,8 @@ class lista_celdas:
         actual = self.primero
         print("-------------------Matriz reducida---------------------")
         while actual != None:
-            print("grupo:",actual.objeto.grupo,"amplitud:",actual.objeto.amplitud,"dato:",actual.objeto.dato,"cadena_patron:",actual.objeto.cadena_patron)
+            print("grupo:",actual.objeto.grupo,"amplitud:",actual.objeto.amplitud,"dato:",actual.objeto.dato,
+                  "cadena_patron:",actual.objeto.cadena_patron,"num_filas",actual.objeto.num_filas)
             actual=actual.siguiente
 
     def recorrer(self):

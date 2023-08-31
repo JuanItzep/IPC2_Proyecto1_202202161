@@ -8,10 +8,12 @@ if __name__=="__main__":
     lista_senales_guardadas=lista_senales() 
     lista_identificadores = lista_celdas()
     def procesar_archivo(ruta):
+        print("")
         tree = ET.parse(ruta)
         raiz=tree.getroot()
+        senalcont =1
         for senal_temp in raiz.findall('senal'):
-            print('Guardando Datos')
+            print('Guardando Datos de senal',senalcont)
             nombre_senal = senal_temp.get('nombre')
             tiempot = senal_temp.get('t')
             amplitudt = senal_temp.get('A')
@@ -25,14 +27,15 @@ if __name__=="__main__":
                     if tiempo>=0 and amplitud>=0 and tiempo<=int(tiempot) and amplitud<=int(amplitudt):
                         nueva_celda = celda_datos(tiempo,amplitud,dato)
                         lista_celdas_temporal.insertar_ordenado(nueva_celda)
-                print('Generando lista de Patrones')
+                print('Generando lista de Patrones de senal',senalcont)
                 lista_celdas_temporal.crear_celdas_faltantes(int(tiempot),int(amplitudt))
                 lista_patrones.crear_generar_patrones(int(tiempot),int(amplitudt),lista_celdas_temporal)
                 lista_matriz_reducida=lista_celdas()
+                print("Creando Matriz reducida de senal",senalcont)
                 lista_matriz_reducida.generar_matriz_reducida(lista_patrones,lista_celdas_temporal,int(amplitudt))
                 lista_senales_guardadas.insertar(senal(nombre_senal,tiempot,amplitudt,lista_celdas_temporal,lista_patrones,lista_matriz_reducida))
-        lista_senales_guardadas.recorrer_e_imprimir_lista()
-        lista_senales_guardadas.recorrer_matriz_reducida()
+            senalcont= senalcont+1
+            print("")
 
     def iniciar_menu():
         ruta=''
@@ -54,7 +57,7 @@ if __name__=="__main__":
             elif opcion == '2':
                 procesar_archivo(ruta)
             elif opcion == '3':
-                print('opcion3')
+                lista_senales_guardadas.crear_xml()
                 print('')
             elif opcion == '4':
                 print('Juan Pascual Itzep Coguox')
