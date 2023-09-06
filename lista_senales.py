@@ -32,25 +32,10 @@ class lista_senales:
             actual.objeto.lista_matriz_reducida.recorrerm()
             actual = actual.siguiente
 
-    def recorrer_e_imprimir_lista(self):
+    def recorrer_e_imprimir_lista_patrones(self):
         print("Total de senales almacenadas:",self.contador_senales+1)
-        print("")
-        print("")
-        print("")
-        print("******************************************************************")
         actual=self.primero
-        while actual != None:
-            print("Nombre:",actual.objeto.nombre,"Tiempo:",actual.objeto.tiempot,
-                "Amplitud:",actual.objeto.amplitudt)
-            actual.objeto.lista_datos.recorrer_e_imprimir_lista()
-            actual=actual.siguiente
-            print("")
-            print("")
-            print("")
-        print("******************************************************************")
-        print("******************************************************************")
-        actual=self.primero
-        print('lista patrones')
+        print('**************lista patrones*********************')
         while actual != None:
             print("Nombre:",actual.objeto.nombre,"Tiempo:",actual.objeto.tiempot,
                 "Amplitud:",actual.objeto.amplitudt)
@@ -105,3 +90,29 @@ class lista_senales:
             else:
                 element.tail = '\n' + indent * (level - 1)
             queue[0:0] = children
+
+    def mostar_senales(self):
+        actual = self.primero
+        n = 1
+        print("--------------Senales Guardadas")
+        while actual!= None:
+            print(n,actual.objeto.nombre)
+            n+=1
+            actual = actual.siguiente
+        senal_elegida=input("Escriba el nombre de la senal a graficar: ")
+        self.buscar_y_crear(senal_elegida)
+
+    def buscar_y_crear(self,senal_elegida):
+        actual = self.primero
+        while actual!= None:
+            if actual.objeto.nombre==senal_elegida:
+                break
+            actual=actual.siguiente
+        if actual == None:
+            print("No se encontro la senal con el nombre:",senal_elegida)
+            return
+        actual.objeto.lista_datos.crear_g_datos(actual.objeto.nombre,actual.objeto.tiempot,actual.objeto.amplitudt)
+        actual.objeto.lista_matriz_reducida.crear_g_reducida(actual.objeto.nombre,actual.objeto.amplitudt)
+
+    def eliminar_datos(self):
+        self.primero = None

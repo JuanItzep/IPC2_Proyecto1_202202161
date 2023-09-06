@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<senalesReducidas>
+  <senal nombre="Señal Facilita" A="3">
+    <grupo g="1">
+      <tiempos>1,2,10</tiempos>
+      <datosGrupo>
+        <dato A="1">9</dato>
+        <dato A="2">16</dato>
+        <dato A="3">8</dato>
+    </datosGrupo>
+    </grupo>
+    <grupo g="2">
+      <tiempos>3,4,5</tiempos>
+      <datosGrupo>
+        <dato A="1">0</dato>
+        <dato A="2">0</dato>
+        <dato A="3">0</dato>
+    </datosGrupo>
+    </grupo>
+    <grupo g="3">
+      <tiempos>6,7</tiempos>
+      <datosGrupo>
+        <dato A="1">7</dato>
+        <dato A="2">0</dato>
+        <dato A="3">8</dato>
+    </datosGrupo>
+    </grupo>
+    <grupo g="4">
+      <tiempos>8,9</tiempos>
+      <datosGrupo>
+        <dato A="1">9</dato>
+        <dato A="2">9</dato>
+        <dato A="3">0</dato>
+      </datosGrupo>
+    </grupo>
+  </senal>
+</senalesReducidas>

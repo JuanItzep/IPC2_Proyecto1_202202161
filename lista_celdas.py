@@ -2,6 +2,7 @@ from celda_datos import celda_datos
 from identificador_patron import identificador_patron
 from nodo import nodo
 from celda_matriz_reducida import celda_matriz_reducida
+import os
 
 class lista_celdas:
     def __init__(self):
@@ -230,3 +231,66 @@ class lista_celdas:
                 "dato:",actual.objeto.dato)
             actual=actual.siguiente
         print("============================================================")
+    
+    def crear_g_datos(self,nombre_senal,tiempot,amplitudt):
+        imagen =open('bb.dot','w',encoding="UTF-8")
+        texto = """digraph G{fontname="Helvetica,Arial,sans-serif"node [fontname="Helvetica,Arial,sans-serif"]edge [fontname="Helvetica,Arial,sans-serif"]"""
+        texto+="""start[label=\""""+nombre_senal+"""\"]"""
+        texto+="""tiempo[label=\"t="""+tiempot+"""\"]"""
+        texto+="""amplitud[label=\"A="""+amplitudt+"""\"]"""
+        texto+="""start->tiempo;"""
+        texto+="""start->amplitud;"""
+        actual = self.primero
+        contador= 1
+        while actual != None:
+            if contador<=int(amplitudt):
+                texto+=str(contador)+"""[label=\""""+str(actual.objeto.dato)+"""\"]"""
+                texto+="""start->"""+str(contador)+""";"""
+            else:
+                texto+=str(contador)+"""[label=\""""+str(actual.objeto.dato)+"""\"]"""
+                texto+=str(contador-int(amplitudt))+"""->"""+str(contador)+""";"""
+            contador+=1
+            actual = actual.siguiente
+        texto+="""}"""
+        imagen.write(texto)
+        imagen.close()
+        os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz/bin'
+        os.system('dot -Tpng bb.dot -o Senal_audio.png')
+    
+    def crear_g_reducida(self,nombre_senal,amplitudt):
+        imagen =open('bb.dot','w',encoding="UTF-8")
+        texto = """digraph G{fontname="Helvetica,Arial,sans-serif"node [fontname="Helvetica,Arial,sans-serif"]edge [fontname="Helvetica,Arial,sans-serif"]"""
+        texto+="""start[label=\""""+nombre_senal+"""\"]"""
+        texto+="""amplitud[label=\"A="""+amplitudt+"""\"]"""
+        texto+="""start->amplitud;"""
+        actual = self.primero
+        contador= 1
+        centinela_grupo= actual.objeto.grupo
+        while actual!= None:
+            if contador==1:
+                texto+="""a"""+str(contador)+"""[label=\"g="""+str(contador)+""" (t="""+str(actual.objeto.grupo)+""")\"]"""
+                texto+= """start->a"""+str(contador)+""";"""
+                contador+= 1
+            else:
+                if centinela_grupo!=actual.objeto.grupo:
+                    texto+="""a"""+str(contador)+"""[label=\"g="""+str(contador)+""" (t="""+str(actual.objeto.grupo)+""")\"]"""
+                    texto+= """a"""+str(contador-1)+"""->a"""+str(contador)+""";"""           
+                    contador+= 1
+                    centinela_grupo=actual.objeto.grupo
+            actual = actual.siguiente
+        actual2 = self.primero
+        contador= 1
+        while actual2 != None:
+            if contador<=int(amplitudt):
+                texto+=str(contador)+"""[label=\""""+str(actual2.objeto.dato)+"""\"]"""
+                texto+="""start->"""+str(contador)+""";"""
+            else:
+                texto+=str(contador)+"""[label=\""""+str(actual2.objeto.dato)+"""\"]"""
+                texto+=str(contador-int(amplitudt))+"""->"""+str(contador)+""";"""
+            contador+=1
+            actual2 = actual2.siguiente
+        texto+="""}"""
+        imagen.write(texto)
+        imagen.close()
+        os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz/bin'
+        os.system('dot -Tpng bb.dot -o Senal_audio_reducida.png')

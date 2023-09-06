@@ -6,7 +6,6 @@ from lista_celdas import lista_celdas
 from lista_senales import lista_senales
 if __name__=="__main__":
     lista_senales_guardadas=lista_senales() 
-    lista_identificadores = lista_celdas()
     def procesar_archivo(ruta):
         print("")
         tree = ET.parse(ruta)
@@ -67,10 +66,11 @@ if __name__=="__main__":
                 print('4to Semestre')
                 print('')
             elif opcion == '5':
-                print('opcion5')
+                lista_senales_guardadas.recorrer_e_imprimir_lista_patrones()
+                lista_senales_guardadas.mostar_senales()
                 print('')
             elif opcion == '6':
-                print('opcion6')
+                lista_senales_guardadas.eliminar_datos()
                 print('')
             elif opcion == '7':
                 a = False
